@@ -1,6 +1,7 @@
 package personal.alexdgarland.advent_of_code.day02
 
 import personal.alexdgarland.advent_of_code.Input
+import kotlin.math.max
 
 enum class CubeColor {
     RED, GREEN, BLUE
@@ -20,6 +21,15 @@ data class Game(val id: Int, val rounds: List<Map<CubeColor, Int>>) {
 
     fun possibleWith(bag: Map<CubeColor, Int>): Boolean {
         return rounds.all { r -> roundPossible(r, bag) }
+    }
+
+    fun minimumBag(): Map<CubeColor, Int> {
+        return rounds.reduce { acc, next ->
+            CubeColor.entries.toTypedArray()
+                .associateWith { color ->
+                    max(acc.getOrElse(color){0}, next.getOrElse(color){0})
+                }
+        }
     }
 
 }
@@ -51,8 +61,10 @@ object Solution {
     fun run() {
         val result = Input.getLines("02")
             .map { line -> parseGameLine(line) }
-            .filter { game -> game.possibleWith(BAG) }
-            .mapToInt { game -> game.id }
+//            .filter { game -> game.possibleWith(BAG) }
+//            .mapToInt { game -> game.id }
+//            .sum()
+            .mapToInt { game -> game.minimumBag().values.reduce {acc, next -> acc * next} }
             .sum()
         print(" --- $result --- ")
     }

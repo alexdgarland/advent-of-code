@@ -1,6 +1,7 @@
 package personal.alexdgarland.advent_of_code.day02
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -82,10 +83,10 @@ class Day02KtTest {
     @ParameterizedTest
     @MethodSource("provideExampleInputLinesForParsing")
     fun checkLineParsing(lineInput: String, expectedGame: Game) {
-        Assertions.assertEquals(expectedGame, parseGameLine(lineInput))
+        assertEquals(expectedGame, parseGameLine(lineInput))
     }
 
-    private val exampleGameForPossibilityChecks = Game(
+    private val defaultExampleGame = Game(
         24,
         listOf(
             mapOf(CubeColor.GREEN to 12, CubeColor.RED to 4, CubeColor.BLUE to 2),
@@ -97,10 +98,18 @@ class Day02KtTest {
     @ParameterizedTest
     @MethodSource("provideExamplesForPossibilityTest")
     fun checkGamePossibility(bag: Map<CubeColor, Int>, shouldAllowGame: Boolean, testDescription: String) {
-        Assertions.assertEquals(
+        assertEquals(
             shouldAllowGame,
-            exampleGameForPossibilityChecks.possibleWith(bag),
+            defaultExampleGame.possibleWith(bag),
             "Failed test for [$testDescription]")
+    }
+
+    @Test
+    fun checkMinimumBag() {
+        assertEquals(
+            mapOf(CubeColor.GREEN to 12, CubeColor.RED to 4, CubeColor.BLUE to 5),
+            defaultExampleGame.minimumBag()
+        )
     }
 
 }
