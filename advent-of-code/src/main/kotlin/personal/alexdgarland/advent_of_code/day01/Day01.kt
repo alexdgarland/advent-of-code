@@ -1,8 +1,6 @@
 package personal.alexdgarland.advent_of_code.day01
 
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.stream.Stream
+import personal.alexdgarland.advent_of_code.Input
 
 private data class DigitSearchResult(val foundDigitChar: Char?, val advanceBy: Int = 1)
 
@@ -60,9 +58,9 @@ fun extractCalibrationValue(line: String): Int {
 object Solution {
 
     fun run() {
-        val inputPath = javaClass.getClassLoader().getResource("day01_input.txt")!!.path
-        val lines: Stream<String> = Files.lines(Paths.get(inputPath))
-        val result = lines.mapToInt { l -> extractCalibrationValue(l) }.sum()
+        val result = Input.getLines("01")
+            .mapToInt { l -> extractCalibrationValue(l) }
+            .sum()
         print(" --- $result --- ")
     }
 
