@@ -18,7 +18,16 @@ class Day03KtTest {
         ".664.598.."
     )
 
-    private val expectedPartNumbers = listOf(467, 35, 633, 617, 592, 755, 664, 598)
+    private val expectedPartNumbers = listOf(
+        PartNumberInformation(467, mutableSetOf(Coordinate(1, 3))),
+        PartNumberInformation(35, mutableSetOf(Coordinate(1, 3))),
+        PartNumberInformation(633, mutableSetOf<Coordinate>()),
+        PartNumberInformation(617, mutableSetOf<Coordinate>()),
+        PartNumberInformation(592, mutableSetOf<Coordinate>()),
+        PartNumberInformation(755, mutableSetOf(Coordinate(8, 5))),
+        PartNumberInformation(664, mutableSetOf<Coordinate>()),
+        PartNumberInformation(598, mutableSetOf(Coordinate(8, 5)))
+    )
 
     @Test
     fun checkGetPartNumbersAgainstExampleGrid() {
