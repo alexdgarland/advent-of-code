@@ -2,62 +2,68 @@ package personal.alexdgarland.advent_of_code.day03
 
 import personal.alexdgarland.advent_of_code.Input
 
-abstract class State(protected val partNumbers: MutableList<Int>) {
-
-    abstract fun handleDigit(digit: Char): State
-
-    abstract fun handleNonDigit(): State
-
-    fun progress(c: Char): State {
-        return if(c.isDigit()) handleDigit(c) else handleNonDigit()
+private fun isSymbol(line: String?, charIndex: Int): Boolean {
+    if (line == null || charIndex < 0 || charIndex > line.lastIndex) {
+        return false
     }
-
-    fun finalizePartNumbers(): List<Int> {
-        handleNonDigit()    // Just in case a part number runs right up to end of line - force flush of state
-        return partNumbers.toList()
-    }
-
+    return line[charIndex] != '.' && !line[charIndex].isDigit()
 }
 
-class OutsideWordState(partNumbers: MutableList<Int>): State(partNumbers) {
+fun getPartNumbersFromLine(grid: List<String>, lineIndex: Int): List<Int> {
+    // Vals that are read-only/ fully immutable within scope of function
+    val currLine: String = grid[lineIndex]
+    val prevLine: String? = if (lineIndex == 0) null else grid[lineIndex-1]
+    val nextLine: String? = if (lineIndex == grid.lastIndex) null else grid[lineIndex+1]
+    // Immutable refs, mutable objects
+    val partsList = mutableListOf<Int>()
+    val builder = StringBuilder()
+    // Mutable vars
+    var inWord = false
+    var sawSymbol = false
 
-    override fun handleDigit(digit: Char): State {
-        val newInWordState = InWordState(partNumbers)
-        return newInWordState.handleDigit(digit)
+    fun flush() {
+        if(sawSymbol) {
+            partsList.add(builder.toString().toInt())
+        }
+        builder.clear()
+        inWord = false
+        sawSymbol = false
     }
 
-    override fun handleNonDigit(): State {
-        return this
+    for(charIndex in currLine.indices) {
+        val currentChar = currLine[charIndex]
+        if(inWord) {
+            sawSymbol = sawSymbol || isSymbol(prevLine, charIndex) || isSymbol(nextLine, charIndex)
+            if(currentChar.isDigit()) {
+                // Keep building current part number
+                builder.append(currentChar)
+            }
+            else {
+                // Flush current part number to list if valid
+                sawSymbol = sawSymbol || isSymbol(currLine, charIndex)
+                flush()
+            }
+        } else {
+            if(currentChar.isDigit()) {
+                // Start a new part number
+                inWord = true
+                sawSymbol = isSymbol(prevLine, charIndex - 1) ||
+                        isSymbol(currLine, charIndex - 1) ||
+                        isSymbol(nextLine, charIndex - 1) ||
+                        isSymbol(prevLine, charIndex) ||
+                        isSymbol(nextLine, charIndex)
+                builder.append(currentChar)
+            }
+        }
     }
-
-}
-
-class InWordState(partNumbers: MutableList<Int>): State(partNumbers) {
-
-    private val builder = StringBuilder()
-
-    override fun handleDigit(digit: Char): State {
-        builder.append(digit)
-        return this
+    if (inWord) {
+        flush()
     }
-
-    override fun handleNonDigit(): State {
-        partNumbers.add(builder.toString().toInt())
-        return OutsideWordState(partNumbers)
-    }
-
-}
-
-fun getPartNumberFromLine(line: String): List<Int> {
-    var state: State = OutsideWordState(mutableListOf())
-    for(c in line) {
-        state = state.progress(c)
-    }
-    return state.finalizePartNumbers()
+    return partsList
 }
 
 fun getPartNumbersFromGrid(grid: List<String>): List<Int> {
-    return grid.flatMap { line -> getPartNumberFromLine(line) }
+    return grid.indices.flatMap { index -> getPartNumbersFromLine(grid, index) }
 }
 
 object Solution {
