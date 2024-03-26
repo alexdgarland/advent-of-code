@@ -37,4 +37,10 @@ class Day04KtTest {
         assertEquals(expectedScores, scores)
     }
 
+    @Test
+    fun wonCardsCountIsCorrect() {
+        val wonCardCount = numberOfCardsWon(exampleCards)
+        assertEquals(30, wonCardCount)
+    }
+
 }

@@ -5,7 +5,7 @@ import kotlin.math.pow
 
 data class Card(val name: String, val winningNumbers: List<Int>, val ownedNumbers: List<Int>) {
 
-    fun score(): Int {
+    fun numberOfMatches(): Int {
         // This isn't operating at a scale where processing is likely to get very expensive,
         // but have decided to do a reasonably efficient anyway (more or less a merge-join)
         // rather than blat it with N^2.
@@ -29,13 +29,18 @@ data class Card(val name: String, val winningNumbers: List<Int>, val ownedNumber
                 winnerIndex++
             }
         }
-        return if(count == 0) 0 else 2.0.pow(count.toDouble() - 1).toInt()
+        return count
+    }
+
+    fun score(): Int {
+        val numberOfMatches = numberOfMatches()
+        return if(numberOfMatches == 0) 0 else 2.0.pow(numberOfMatches.toDouble() - 1).toInt()
     }
 
     companion object {
 
         private fun splitToInts(s: String): List<Int> {
-            return s.split(" ").filter{it.isNotBlank()}.map { it.toInt() }
+            return s.split(" ").filter{ it.isNotBlank() }.map { it.toInt() }
         }
 
         fun fromString(str: String): Card {
@@ -47,14 +52,33 @@ data class Card(val name: String, val winningNumbers: List<Int>, val ownedNumber
 
 }
 
+fun numberOfCardsWon(cards: List<Card>): Int {
+    val matchNumbers = cards.map{it.numberOfMatches()}
+    val wonCardCounts = MutableList(cards.size) { 1 }
+
+    for(i in cards.lastIndex -1 downTo 0) {
+        val numberOfCardsToProcess = matchNumbers[i]
+        var count = 0
+        for(j in i+1 .. i+numberOfCardsToProcess) {
+            count += wonCardCounts[j]
+        }
+        wonCardCounts[i] += count
+    }
+
+    return wonCardCounts.sum()
+}
+
 
 object Solution {
 
     fun run() {
-        val result = Input.getLines("04").toList()
-            .sumOf { Card.fromString(it).score() }
+        val cards = Input.getLines("04").toList().map { Card.fromString(it) }
 
-        println(" --- $result --- ")
+        val scoringResult = cards.sumOf { it.score() }
+        println(" --- $scoringResult --- ")
+
+        val numberOfCardsResult = numberOfCardsWon(cards)
+        println(" --- $numberOfCardsResult --- ")
     }
 
 }
