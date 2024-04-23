@@ -59,7 +59,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>MainKt</mainClass>
+                    <mainClass>personal.alexdgarland.advent_of_code.MainKt</mainClass>
                 </configuration>
             </plugin>
             <plugin>
