@@ -21,11 +21,11 @@ class Day03KtTest {
     private val expectedPartNumbers = listOf(
         PartNumberInformation(467, mutableSetOf(Coordinate(1, 3))),
         PartNumberInformation(35, mutableSetOf(Coordinate(1, 3))),
-        PartNumberInformation(633, mutableSetOf<Coordinate>()),
-        PartNumberInformation(617, mutableSetOf<Coordinate>()),
-        PartNumberInformation(592, mutableSetOf<Coordinate>()),
+        PartNumberInformation(633, mutableSetOf()),
+        PartNumberInformation(617, mutableSetOf(Coordinate(4, 3))),
+        PartNumberInformation(592, mutableSetOf()),
         PartNumberInformation(755, mutableSetOf(Coordinate(8, 5))),
-        PartNumberInformation(664, mutableSetOf<Coordinate>()),
+        PartNumberInformation(664, mutableSetOf()),
         PartNumberInformation(598, mutableSetOf(Coordinate(8, 5)))
     )
 
