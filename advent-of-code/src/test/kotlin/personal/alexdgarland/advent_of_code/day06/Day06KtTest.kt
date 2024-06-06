@@ -3,7 +3,7 @@ package personal.alexdgarland.advent_of_code.day06
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Day05KtTest {
+class Day06KtTest {
 
     private val testExamples: List<RaceConfig> = RaceConfigs.fromInputPart1(
         listOf(
