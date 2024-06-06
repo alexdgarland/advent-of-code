@@ -2,18 +2,29 @@ package personal.alexdgarland.advent_of_code.day06
 
 import personal.alexdgarland.advent_of_code.Input
 
-data class RaceConfig(val availableTime: Int, val distanceToBeat: Int)
+data class RaceConfig(val availableTime: Long, val distanceToBeat: Long)
 
 object RaceConfigs {
 
-    private fun parseRow(row: String): List<Int> {
-        return row.split(" ").filter{it != ""}.drop(1).map{it.toInt()}
+    private fun parseRowPart1(row: String): List<Long> {
+        return row.split(" ").filter{it != ""}.drop(1).map{it.toLong()}
     }
 
-    fun fromInput(input: List<String>): List<RaceConfig> {
-        val times = parseRow(input[0])
-        val distances = parseRow(input[1])
+    fun fromInputPart1(input: List<String>): List<RaceConfig> {
+        val times = parseRowPart1(input[0])
+        val distances = parseRowPart1(input[1])
         return times.zip(distances).map{RaceConfig(it.first, it.second)}
+    }
+
+    private fun parseRowPart2(row: String): Long {
+        return row.split(" ").filter{it != ""}.drop(1).joinToString("").toLong()
+    }
+
+    fun fromInputPart2(input: List<String>): RaceConfig {
+        return RaceConfig(
+            availableTime = parseRowPart2(input[0]),
+            distanceToBeat = parseRowPart2(input[1])
+        )
     }
 
 }
@@ -40,7 +51,8 @@ object RaceConfigs {
  *
  *  - Very minor (and implemented as trivial) - if either C = 0 or M = 0 (C = T), we will travel zero distance,
  *      so we can in fact just run over the range 1 >= C <= (T - 1)
- *  - Significant if we run for very large numbers (but not implemented) -
+ *  - Significant if we run for very large numbers
+ *      (but not implemented - perf was fine anyway even for the larger part 2) -
  *      any situation where M and C are both greater than the square root of B will let us beat B,
  *      so we can simply count the length of the middle stretch for which this is true (O(1) operation)
  *      and then do actual calculations only on the end sections where this does not hold.
@@ -56,9 +68,14 @@ object Solution {
 
     fun run() {
         val input = Input.getLines("06").toList()
-        val configs = RaceConfigs.fromInput(input)
-        val result = configs.map { calculateNumberOfWaysToBeat(it) }.reduce(Int::times)
-        println(" --- $result --- ")
+
+        val part1Configs = RaceConfigs.fromInputPart1(input)
+        val part1Result = part1Configs.map { calculateNumberOfWaysToBeat(it) }.reduce(Int::times)
+        println(" --- $part1Result --- ")   // 252000
+
+        val part2SingleConfig = RaceConfigs.fromInputPart2(input)
+        val part2Result = calculateNumberOfWaysToBeat(part2SingleConfig)
+        println(" --- $part2Result --- ")   // 36992486
     }
 
 }

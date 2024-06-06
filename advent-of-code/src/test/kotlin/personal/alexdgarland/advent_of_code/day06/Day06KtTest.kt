@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class Day05KtTest {
 
-    private val testExamples: List<RaceConfig> = RaceConfigs.fromInput(
+    private val testExamples: List<RaceConfig> = RaceConfigs.fromInputPart1(
         listOf(
             "Time:      7  15   30",
             "Distance:  9  40  200"
