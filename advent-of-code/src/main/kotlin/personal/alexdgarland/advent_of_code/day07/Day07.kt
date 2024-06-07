@@ -26,7 +26,7 @@ enum class CardType(val rankingScore: Int) {
     FOUR(4),
     THREE(3),
     TWO(2),
-    JOKER( 1)
+    JOKER(1)
 }
 
 data class IdentifiedHand(val type: HandType, val cards: List<CardType>)
@@ -125,7 +125,8 @@ class Part1HandIdentifier: HandIdentifier() {
  * Implementation for part 2, where 'J' -> Joker card which has special logic.
  *
  * The change here turned out to be fairly straightforward and worked straight away once the refactor was done,
- * so have not bothered adding additional unit tests - am being very pragmatic with these given that
+ * so have not bothered adding additional unit tests - am being very pragmatic with these
+ * given that the AoC site itself provides an unambiguous overall check of correctness.
  *
  */
 class Part2HandIdentifier: HandIdentifier() {
