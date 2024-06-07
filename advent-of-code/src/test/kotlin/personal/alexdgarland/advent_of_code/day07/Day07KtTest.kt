@@ -4,22 +4,19 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-import personal.alexdgarland.advent_of_code.day07.Scoring.identifyHand
-import personal.alexdgarland.advent_of_code.day07.Scoring.IdentifiedHand
-import personal.alexdgarland.advent_of_code.day07.Scoring.HandType
-import personal.alexdgarland.advent_of_code.day07.Scoring.CardType
-
 class Day07KtTest {
 
     @Nested
-    inner class HandIdentificationTests {
+    inner class Part1HandIdentificationTests {
+
+        val identifier = Part1HandIdentifier()
 
         /***
          * Five of a kind, where all five cards have the same label: AAAAA
          */
         @Test
         fun `Five of a kind`() {
-            val identifiedHand = identifyHand("AAAAA")
+            val identifiedHand = identifier.identifyHand("AAAAA")
             val expected = IdentifiedHand(
                 HandType.FIVE_OF_A_KIND,
                 listOf(
@@ -38,7 +35,7 @@ class Day07KtTest {
          */
         @Test
         fun `Four of a kind`() {
-            val identifiedHand = identifyHand("AA8AA")
+            val identifiedHand = identifier.identifyHand("AA8AA")
             val expected = IdentifiedHand(
                 HandType.FOUR_OF_A_KIND,
                 listOf(
@@ -58,7 +55,7 @@ class Day07KtTest {
          */
         @Test
         fun `Full house`() {
-            val identifiedHand = identifyHand("23332")
+            val identifiedHand = identifier.identifyHand("23332")
             val expected = IdentifiedHand(
                 HandType.FULL_HOUSE,
                 listOf(
@@ -78,7 +75,7 @@ class Day07KtTest {
          */
         @Test
         fun `Three of a kind`() {
-            val identifiedHand = identifyHand("TTT98")
+            val identifiedHand = identifier.identifyHand("TTT98")
             val expected = IdentifiedHand(
                 HandType.THREE_OF_A_KIND,
                 listOf(
@@ -98,7 +95,7 @@ class Day07KtTest {
          */
         @Test
         fun `Two pair`() {
-            val identifiedHand = identifyHand("23432")
+            val identifiedHand = identifier.identifyHand("23432")
             val expected = IdentifiedHand(
                 HandType.TWO_PAIR,
                 listOf(
@@ -118,7 +115,7 @@ class Day07KtTest {
          */
         @Test
         fun `One pair`() {
-            val identifiedHand = identifyHand("A23A4")
+            val identifiedHand = identifier.identifyHand("A23A4")
             val expected = IdentifiedHand(
                 HandType.ONE_PAIR,
                 listOf(
@@ -137,7 +134,7 @@ class Day07KtTest {
          */
         @Test
         fun `High card`() {
-            val identifiedHand = identifyHand("23456")
+            val identifiedHand = identifier.identifyHand("23456")
             val expected = IdentifiedHand(
                 HandType.HIGH_CARD,
                 listOf(
